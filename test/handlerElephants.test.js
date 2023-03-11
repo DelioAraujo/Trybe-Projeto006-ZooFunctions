@@ -25,4 +25,3 @@ describe('Testes da função HandlerElephants', () => {
     expect(handlerElephants('availability')).toEqual(['Friday', 'Saturday', 'Sunday', 'Tuesday']);
   });
 });
-
