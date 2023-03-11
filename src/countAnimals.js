@@ -11,9 +11,9 @@ const countAnimals = (animal) => {
 
   if (!animal) {
     return contagemTotal;
-  }  if (animal.length === 1) {
+  } if (animal.length === 1) {
     return contagemIndividual;
-  }  if (animal.length === 2) {
+  } if (animal.length === 2) {
     return contagemGenero;
   }
 };
