@@ -4,9 +4,9 @@ const getOldestFromFirstSpecies = (id) => {
   const colaborador = data.employees.find((elemento) => elemento.id === id);
   const primeiraEspecieId = colaborador.responsibleFor[0];
   const primeiraEspecie = data.species.find((elemento) => elemento.id === primeiraEspecieId);
-  const animalMaisVelho = primeiraEspecie.residents.reduce((acc, curr) => {
-    return acc.age > curr.age ? acc : curr;
-  });
+  const animalMaisVelho = primeiraEspecie.residents.reduce((acc, curr) =>
+    acc.age > curr.age ? acc : curr
+  );
 
   return [animalMaisVelho.name, animalMaisVelho.sex, animalMaisVelho.age];
 };
