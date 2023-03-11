@@ -7,22 +7,18 @@ const isManager = (id) => {
   const burlId = '0e7b460e-acf4-4e17-bcb3-ee472265db83';
   const gerentes = [stephanieId, olaId, burlId];
 
-  if (gerentes.includes(id)){
-    return true
-  } return false
-
+  if (gerentes.includes(id)) {
+    return true;
+  } return false;
 };
-
 const getRelatedEmployees = (managerId) => {
 
-  if (!isManager(managerId)){
-    throw  new  Error('O id inserido não é de uma pessoa colaboradora gerente!');
-
+  if (!isManager(managerId)) {
+    throw new Error('O id inserido não é de uma pessoa colaboradora gerente!');
   } else {
-    return data.employees.filter((elemento) => elemento.managers.includes(managerId)).map((elemento) => `${elemento.firstName} ${elemento.lastName}`)
-
-
+    return employees.filter((elemento) => elemento.managers.includes(managerId))
+    .map((elemento) => `${elemento.firstName} ${elemento.lastName}`);
     }
-  }
+};
 
 module.exports = { isManager, getRelatedEmployees };
