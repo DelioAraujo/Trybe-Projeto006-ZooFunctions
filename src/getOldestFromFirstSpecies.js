@@ -1,3 +1,5 @@
+const data = require('../data/zoo_data');
+
 const getOldestFromFirstSpecies = (id) => {
   const colaborador = data.employees.find((elemento) => elemento.id === id);
   const primeiraEspecieId = colaborador.responsibleFor[0];
@@ -9,3 +11,4 @@ const getOldestFromFirstSpecies = (id) => {
   return [animalMaisVelho.name, animalMaisVelho.sex, animalMaisVelho.age];
 };
 
+module.exports = getOldestFromFirstSpecies;
