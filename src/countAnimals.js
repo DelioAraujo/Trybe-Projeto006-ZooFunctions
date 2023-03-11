@@ -1,7 +1,7 @@
 const data = require('../data/zoo_data');
 
 const countAnimals = (animal) => {
-  const contagemTotal = data.species.map((elemento2) => `${elemento2.name}: ${elemento2.popularity}`);
+  const contagemTotal = data.species.map((element) => `${element.name}: ${element.popularity}`);
 
   const bicho = data.species.find((elemento) => elemento.name === animal.species);
   const contagemIndividual = bicho.popularity;
@@ -11,9 +11,9 @@ const countAnimals = (animal) => {
 
   if (!animal) {
     return contagemTotal;
-  } else if (animal.length === 1) {
+  }  if (animal.length === 1) {
     return contagemIndividual;
-  } else if (animal.length === 2) {
+  }  if (animal.length === 2) {
     return contagemGenero;
   }
 };
