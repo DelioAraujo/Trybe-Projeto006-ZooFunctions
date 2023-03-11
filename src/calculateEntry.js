@@ -20,9 +20,9 @@ const calculateEntry = (entrants) => {
   const calculoDeEntradas = countEntrants(entrants);
 
   const valorTotal = (
-    calculoDeEntradas.child * data.prices.child +
-    calculoDeEntradas.adult * data.prices.adult +
-    calculoDeEntradas.senior * data.prices.senior
+    calculoDeEntradas.child * data.prices.child
+    + calculoDeEntradas.adult * data.prices.adult
+    + calculoDeEntradas.senior * data.prices.senior
   );
 
   return parseFloat(valorTotal.toFixed(2));
