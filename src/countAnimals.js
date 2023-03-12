@@ -1,21 +1,33 @@
 const data = require('../data/zoo_data');
 
 const countAnimals = (animal) => {
-  const contagemTotal = data.species.map((element) => `${element.name}: ${element.popularity}`);
+  // seu código aqui
+  if(!animal) {
+    const listaCompleta = data.species.reduce((acc, crr) => {
+      acc[crr.name] = crr.residents.length;
+      return acc;
+    },{})
 
-  const bicho = data.species.find((elemento) => elemento.name === animal.species);
-  const contagemIndividual = bicho.popularity;
-
-  const genero = data.species.residents.filter((elemento) => elemento.sex === animal.sex);
-  const contagemGenero = genero.length;
-
-  if (!animal) {
-    return contagemTotal;
-  } if (animal.length === 1) {
-    return contagemIndividual;
-  } if (animal.length === 2) {
-    return contagemGenero;
+    return listaCompleta;
   }
+
+
+  if (animal.species) {
+    const bicho = data.species.find((element) => element.name === animal.species);
+    const quantiadeBicho = bicho.residents.length;
+
+    return quantiadeBicho;
+  }
+
+  if (animal.sex){
+    const bicho = data.species.find((element) => element.name === animal.species);
+    const bichoPorSexo = bicho.residents.filter((element2) => element2.sex === animal.sex);
+    const quantidadePorSexo = bichoPorSexo.length
+
+    return quantidadePorSexo;
+
+  }
+
 };
 
 module.exports = countAnimals;
