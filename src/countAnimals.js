@@ -17,7 +17,6 @@ const countAnimals = (animal) => {
     const bicho = data.species.find((element) => element.name === animal.species);
     return bicho.residents.length;
   }
-
 };
 
 module.exports = countAnimals;
