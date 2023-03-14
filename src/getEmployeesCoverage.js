@@ -2,7 +2,7 @@ const data = require('../data/zoo_data');
 
 const getEmployeeByName = (parametro) => {
   const empregadoByName = data.employees
-    .find((empregado) => empregado.firstName === parametro.name || empregado.lastName === parametro.name);
+    .find((empr) => empr.firstName === parametro.name || empr.lastName === parametro.name);
   return {
     id: empregadoByName.id,
     fullName: `${empregadoByName.firstName} ${empregadoByName.lastName}`,
