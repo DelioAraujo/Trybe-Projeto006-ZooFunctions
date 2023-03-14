@@ -1,46 +1,53 @@
 const data = require('../data/zoo_data');
 
-const getFullName = (employee) => `${employee.firstName} ${employee.lastName}`;
-
-const getSpeciesAndLocations = (employee, data) => {
-  const species = employee.responsibleFor.map((id) => data.species.find((s) => s.id === id).name);
-  const locations = employee.responsibleFor.map((id) => data.species.find((s) => s.id === id).location);
-  return { species, locations };
+const getEmployeeByName = (parametro) => {
+  const empregadoByName = data.employees
+    .find((empregado) => empregado.firstName === parametro.name || empregado.lastName === parametro.name);
+  return {
+    id: empregadoByName.id,
+    fullName: `${empregadoByName.firstName} ${empregadoByName.lastName}`,
+    species: empregadoByName.responsibleFor
+      .map((element) => data.species.find((bicho) => bicho.id === element).name),
+    locations: empregadoByName.responsibleFor
+      .map((element) => data.species.find((bicho) => bicho.id === element).location),
+  };
 };
 
-const getEmployeeById = (id, data) => {
-  const employee = data.employees.find((e) => e.id === id);
-  if (employee) {
-    const { species, locations } = getSpeciesAndLocations(employee, data);
-    return { id, fullName: getFullName(employee), species, locations };
-  }
+const getEmployeeById = (parametro) => {
+  const empregadoById = data.employees.find((empregado2) => empregado2.id === parametro.id);
+  return {
+    id: parametro.id,
+    fullName: `${empregadoById.firstName} ${empregadoById.lastName}`,
+    species: empregadoById.responsibleFor
+      .map((element) => data.species.find((bicho) => bicho.id === element).name),
+    locations: empregadoById.responsibleFor
+      .map((element) => data.species.find((bicho) => bicho.id === element).location),
+  };
 };
 
-const getEmployeeByName = (name, data) => {
-  const employee = data.employees.find((e) => e.firstName === name || e.lastName === name);
-  if (employee) {
-    const { species, locations } = getSpeciesAndLocations(employee, data);
-    return { id: employee.id, fullName: getFullName(employee), species, locations };
-  }
-};
-
-const getAllEmployees = (data) => {
-  return data.employees.map((e) => {
-    const { species, locations } = getSpeciesAndLocations(e, data);
-    return { id: e.id, fullName: getFullName(e), species, locations };
+const getAllEmployees = () => data.employees.reduce((acc, crr) => {
+  acc.push({
+    id: crr.id,
+    fullName: `${crr.firstName} ${crr.lastName}`,
+    species: crr.responsibleFor
+      .map((element) => data.species.find((bicho) => bicho.id === element).name),
+    locations: crr.responsibleFor
+      .map((element) => data.species.find((bicho) => bicho.id === element).location),
   });
-};
+  return acc;
+}, []);
 
 const getEmployeesCoverage = (parametro) => {
-  if (typeof parametro === 'object' && parametro.name) {
-    return getEmployeeByName(parametro.name, data);
-  }
-  if (typeof parametro === 'object' && parametro.id) {
-    return getEmployeeById(parametro.id, data);
-  }
   if (!parametro) {
-    return getAllEmployees(data);
+    return getAllEmployees();
   }
+  if (parametro.name) {
+    return getEmployeeByName(parametro);
+  }
+  if (parametro.id !== 'Id inválido') {
+    return getEmployeeById(parametro);
+  }
+  if (parametro.id === 'Id inválido') throw new Error('Informações inválidas');
 };
 
 module.exports = getEmployeesCoverage;
