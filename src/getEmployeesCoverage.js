@@ -1,34 +1,29 @@
 const data = require('../data/zoo_data');
 
+const findEmployeeByNameOrLastName = (name) => data.employees.find((empregado) => empregado.firstName === name || empregado.lastName === name);
+
+const findSpeciesNameById = (id) => data.species.find((bicho) => bicho.id === id).name;
+
+const findSpeciesLocationById = (id) => data.species.find((bicho) => bicho.id === id).location;
+
+const mapEmployeeToCoverage = (empregado) => ({
+  id: empregado.id,
+  fullName: `${empregado.firstName} ${empregado.lastName}`,
+  species: empregado.responsibleFor.map(findSpeciesNameById),
+  locations: empregado.responsibleFor.map(findSpeciesLocationById),
+});
+
 const getEmployeesCoverage = (parametro) => {
   if (typeof parametro === 'object' && parametro.name) {
-    const empregadoByName = data.employees.find((empregado) => empregado.firstName === parametro.name || empregado.lastName === parametro.name);
-    return {
-      id: empregadoByName.id,
-      fullName: `${empregadoByName.firstName} ${empregadoByName.lastName}`,
-      species: empregadoByName.responsibleFor.map((element) => data.species.find((bicho) => bicho.id === element).name),
-      locations: empregadoByName.responsibleFor.map((element) => data.species.find((bicho) => bicho.id === element).location),
-    };
+    const empregadoByName = findEmployeeByNameOrLastName(parametro.name);
+    return mapEmployeeToCoverage(empregadoByName);
   }
   if (typeof parametro === 'object' && parametro.id) {
     const empregadoById = data.employees.find((empregado2) => empregado2.id === parametro.id);
-    return {
-      id: parametro.id,
-      fullName: `${empregadoById.firstName} ${empregadoById.lastName}`,
-      species: empregadoById.responsibleFor.map((element) => data.species.find((bicho) => bicho.id === element).name),
-      locations: empregadoById.responsibleFor.map((element) => data.species.find((bicho) => bicho.id === element).location),
-    };
+    return mapEmployeeToCoverage(empregadoById);
   }
   if (!parametro) {
-    return data.employees.reduce((acc, crr) => {
-      acc.push({
-        id: crr.id,
-        fullName: `${crr.firstName} ${crr.lastName}`,
-        species: crr.responsibleFor.map((element) => data.species.find((bicho) => bicho.id === element).name),
-        locations: crr.responsibleFor.map((element) => data.species.find((bicho) => bicho.id === element).location),
-      });
-      return acc;
-    }, []);
+    return data.employees.map(mapEmployeeToCoverage);
   }
 };
 
