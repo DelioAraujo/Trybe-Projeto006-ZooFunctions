@@ -1,29 +1,45 @@
 const data = require('../data/zoo_data');
 
-const findEmployeeByNameOrLastName = (name) => data.employees.find((empregado) => empregado.firstName === name || empregado.lastName === name);
+const getFullName = (employee) => `${employee.firstName} ${employee.lastName}`;
 
-const findSpeciesNameById = (id) => data.species.find((bicho) => bicho.id === id).name;
+const getSpeciesAndLocations = (employee, data) => {
+  const species = employee.responsibleFor.map((id) => data.species.find((s) => s.id === id).name);
+  const locations = employee.responsibleFor.map((id) => data.species.find((s) => s.id === id).location);
+  return { species, locations };
+};
 
-const findSpeciesLocationById = (id) => data.species.find((bicho) => bicho.id === id).location;
+const getEmployeeById = (id, data) => {
+  const employee = data.employees.find((e) => e.id === id);
+  if (employee) {
+    const { species, locations } = getSpeciesAndLocations(employee, data);
+    return { id, fullName: getFullName(employee), species, locations };
+  }
+};
 
-const mapEmployeeToCoverage = (empregado) => ({
-  id: empregado.id,
-  fullName: `${empregado.firstName} ${empregado.lastName}`,
-  species: empregado.responsibleFor.map(findSpeciesNameById),
-  locations: empregado.responsibleFor.map(findSpeciesLocationById),
-});
+const getEmployeeByName = (name, data) => {
+  const employee = data.employees.find((e) => e.firstName === name || e.lastName === name);
+  if (employee) {
+    const { species, locations } = getSpeciesAndLocations(employee, data);
+    return { id: employee.id, fullName: getFullName(employee), species, locations };
+  }
+};
+
+const getAllEmployees = (data) => {
+  return data.employees.map((e) => {
+    const { species, locations } = getSpeciesAndLocations(e, data);
+    return { id: e.id, fullName: getFullName(e), species, locations };
+  });
+};
 
 const getEmployeesCoverage = (parametro) => {
   if (typeof parametro === 'object' && parametro.name) {
-    const empregadoByName = findEmployeeByNameOrLastName(parametro.name);
-    return mapEmployeeToCoverage(empregadoByName);
+    return getEmployeeByName(parametro.name, data);
   }
   if (typeof parametro === 'object' && parametro.id) {
-    const empregadoById = data.employees.find((empregado2) => empregado2.id === parametro.id);
-    return mapEmployeeToCoverage(empregadoById);
+    return getEmployeeById(parametro.id, data);
   }
   if (!parametro) {
-    return data.employees.map(mapEmployeeToCoverage);
+    return getAllEmployees(data);
   }
 };
 
