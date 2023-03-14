@@ -8,15 +8,16 @@ const countAnimals = (animal) => {
     }, {});
     return listaCompleta;
   }
-  if (animal.species) {
-    const bicho = data.species.find((element) => element.name === animal.species);
-    return bicho.residents.length;
-  }
   if (animal.sex) {
     const bicho = data.species.find((element) => element.name === animal.species);
     const bichoPorSexo = bicho.residents.filter((element2) => element2.sex === animal.sex);
     return bichoPorSexo.length;
   }
+  if (animal.species) {
+    const bicho = data.species.find((element) => element.name === animal.species);
+    return bicho.residents.length;
+  }
+
 };
 
 module.exports = countAnimals;
